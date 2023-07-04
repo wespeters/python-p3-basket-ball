@@ -182,3 +182,57 @@ def game_dict():
             ]
         }
     }
+
+def num_points_per_game(player_name):
+    game_data = game_dict()
+    for location in game_data:
+        for player in game_data[location]['players']:
+            if player['name'] == player_name:
+                return player['points_per_game']
+
+def player_age(player_name):
+    game_data = game_dict()
+    for location in game_data:
+        for player in game_data[location]['players']:
+            if player['name'] == player_name:
+                return player['age']
+
+def team_colors(team_name):
+    game_data = game_dict()
+    for location in game_data:
+        if game_data[location]['team_name'] == team_name:
+            return game_data[location]['colors']
+
+def team_names():
+    game_data = game_dict()
+    return [game_data['home']['team_name'], game_data['away']['team_name']]
+
+def player_numbers(team_name):
+    game_data = game_dict()
+    for location in game_data:
+        if game_data[location]['team_name'] == team_name:
+            return [player['number'] for player in game_data[location]['players']]
+
+def player_stats(player_name):
+    game_data = game_dict()
+    for location in game_data:
+        for player in game_data[location]['players']:
+            if player['name'] == player_name:
+                return player
+            
+import statistics
+
+def average_rebounds_by_shoe_brand():
+    game_data = game_dict()
+    shoe_brands_rebounds = {}
+    for location in ["home", "away"]:
+        team_data = game_data[location]
+        for player_data in team_data["players"]:
+            shoe_brand = player_data["shoe_brand"]
+            rebounds = player_data["rebounds_per_game"]
+            if shoe_brand not in shoe_brands_rebounds:
+                shoe_brands_rebounds[shoe_brand] = []
+            shoe_brands_rebounds[shoe_brand].append(rebounds)
+    for brand, rebounds in shoe_brands_rebounds.items():
+        avg_rebounds = "{:.2f}".format(statistics.mean(rebounds))
+        print(f"{brand}:  {avg_rebounds}") 
