@@ -183,42 +183,39 @@ def game_dict():
         }
     }
 
-def num_points_per_game(player_name):
+def find_player_or_team(name):
     game_data = game_dict()
     for location in game_data:
+        if game_data[location]['team_name'] == name:
+            return game_data[location]
         for player in game_data[location]['players']:
-            if player['name'] == player_name:
-                return player['points_per_game']
+            if player['name'] == name:
+                return player
+
+
+def num_points_per_game(player_name):
+    player = find_player_or_team(player_name)
+    return player['points_per_game'] 
 
 def player_age(player_name):
-    game_data = game_dict()
-    for location in game_data:
-        for player in game_data[location]['players']:
-            if player['name'] == player_name:
-                return player['age']
+    player = find_player_or_team(player_name)
+    return player['age']
 
 def team_colors(team_name):
-    game_data = game_dict()
-    for location in game_data:
-        if game_data[location]['team_name'] == team_name:
-            return game_data[location]['colors']
+    team = find_player_or_team(team_name)
+    return team['colors']
 
 def team_names():
     game_data = game_dict()
     return [game_data['home']['team_name'], game_data['away']['team_name']]
 
 def player_numbers(team_name):
-    game_data = game_dict()
-    for location in game_data:
-        if game_data[location]['team_name'] == team_name:
-            return [player['number'] for player in game_data[location]['players']]
+    team = find_player_or_team(team_name)
+    return [player['number'] for player in team['players']]
 
 def player_stats(player_name):
-    game_data = game_dict()
-    for location in game_data:
-        for player in game_data[location]['players']:
-            if player['name'] == player_name:
-                return player
+    player = find_player_or_team(player_name)
+    return player 
             
 import statistics
 
