@@ -183,6 +183,7 @@ def game_dict():
         }
     }
 
+# helper function
 def find_player_or_team(name):
     game_data = game_dict()
     for location in game_data:
